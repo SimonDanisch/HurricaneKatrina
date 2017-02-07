@@ -20,6 +20,13 @@ tj2 = @elapsed kmeans(imgvec, clusters)
 means, labels = kmeans(imgvec, clusters)
 segmented2 = reshape(map(i-> means[i], labels), size(imgs))
 
+# test julia threadded
+import GPUArrays: JLBackend
+import JLBackend: JLArray, mapidx
+JLBackend.init()
+@time kmeans(JLArray(imgvec), JLArray(clusters))
+
+
 
 ArrayFire.setBackend(AF_BACKEND_CPU);
 img = loadImage(impath, color = true);
